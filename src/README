@@ -1,0 +1,113 @@
+shaharbirzon
+matan.halfon
+
+
+
+
+=============================
+=      File description     =
+=============================
+Filters:
+
+Filter.java - contains the Filter class which represent a general file filter
+
+AbilityFilter.java, AllFilter.java, BetweenFilter.java, ContainsFilter.java, FileFilter.java,
+GreaterThanFilter.java, PrefixFilter.java, SmallerThanFilter.java, SuffixFilter.java- this files contain the
+classes for each filter
+
+FilterFactory.java - contains the factory class, which creates filter object by request.
+
+
+Orders:
+
+Order.java - contains the Order class which represent a general file order
+
+AbsOrder.java, SizeOrder.java, TypeOrder.java - this files contain the classes for each order
+
+OrderFactory.java - contains the factory class, which creates order object by request.
+
+
+Exceptions:
+
+TypeOneException.java - contains the type one exception class
+
+TypeTwoException.java - contains the type two exception class
+
+
+General files:
+
+ParseCommand.java - contains ParseCommand class, which is responsible for reading the command file and
+split it to sections.
+
+ParseDir.java - responsible for reading the directory and adding all given (valid) files to an arraylist.
+
+Section.java - responsible for sorting and filtering the files according to the given filter and order and
+print the relevant output accordingly.
+
+DirectoryProcessor.java - contains the main method. responsible for handling type 2 errors mainly , receiving
+the data from the user and printing the data from all sections.
+
+=============================
+=          Design           =
+=============================
+
+We decided to split our project to packages in order to make it more organized.
+filters package:
+contains the classes of every filter type. We decided that each filter will be represented in a class in order
+to keep the open-closed principle and make our program more modular and open to changes. All filter types
+extend the abstract class Filter which contain all shared data members and methods. This package contains the
+factory class which is responsible for creating the relevant filter object when needed.
+every filter throws a type one exception when the given args are illegal, and the factory class throws a type
+one exception when the filter name is illegal. These are handled in ParseCommand.
+
+orders package:
+contains the classes of every order type. Like filters, we decided to implement it this way for the same
+reasons stated above. Like in files, we have a factory class for the orders, for the same reasons.
+the same explanation about type 1 exceptions is relevant here as well.
+this design preserves the single-choice principle as well.
+
+fileExceptions package:
+contains 2 classes for each of the exception type. We decided to put them in their own package in order to
+make it easier to add a new exception type if needed, and for the reason that they are used in many parts of
+the project. Type one exceptions are thrown only from filter/order classes and factories and handled in
+ParseCommand, and type2 are thrown from ParseCommand and handles in thr main method.
+
+other classes in filesProcessing package:
+the parse dir class is responsible for reading the given directory and translate the data to an array list of
+files, which will be handled in Section class.
+ParseCommand class is responsible for reading the command file and split it into sections. a section is
+an object, which hold its relevant filter and order objects and prints the desired output files and warnings
+accordingly. We decided to handle each section separately in order to make our program readable and easier to
+understand.
+The ParseCommand class is the core of the program. It reads the command files and throws type2 exceptions if
+needed, and creates the filter and order objects with the help of the factories. It also handles type1
+exceptions if thrown from factories and creates default filters/orders. All Section relevant data will be
+handled in Section class.
+The DirectoryProcessor class contains the main method, which handles type2 exceptions and runs throw all
+section and print the needed output and warnings.
+
+=============================
+=  Implementation details   =
+=============================
+
+we decided to use enums in the factory in order to make our code readable and more elegant.
+we decided to switch cases in the parse  command becouse the we move from one case to the anther we thought that will
+be more elegant then a multipale if else blocks.
+we created section class to "pack " a single section of commands each section holds the needed filter and order(default if there is a type 1 error)
+and the warning lines for that block of commands (type 1 errors).
+the section get the dir input parsed into an array and then filter it and order , farther more the section method got a print methods that 
+print the processed input and the warnings lines .
+
+
+
+
+Q
+
+we divarged the exption to two types. 
+type 2 are problem that the program should not handle like IO and a lack of headers or right num of args in the main method
+type 1 errors are problam that the program should  handle  like bad num  for a filter or order or bad num of parametrs for it.
+
+to order the files we used the Comperator interface so the method sort could sort it .
+each Order get a differnt Comperator that match the order needed all that is a feacher of Arraylist.
+if  two files get equels at the comperator (same size for instance ) we get a default order(abs order by the school soultion).
+
